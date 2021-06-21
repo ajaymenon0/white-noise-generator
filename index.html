@@ -84,7 +84,8 @@
     }
 
     function resetTimer() {
-      pomodoro.reset();
+      stfu();
+      pomodoro = new Timer(showtime, newNoise, togglePlayButton);
     }
   </script>
 </body>
