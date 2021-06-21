@@ -1,11 +1,24 @@
 class Noise {
-  constructor() {
+  constructor(settings) {
     this.audioContext = new (window.AudioContext ||
       window.webkitAudioContext)();
+    this.noiseNode = this.audioContext.createBufferSource();
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.gain.value = 0;
+    this.volume = settings.volume || 0.5; // init volume
+
+    this.filterNode = this.audioContext.createBiquadFilter();
+    this.filterNode.type = 'lowpass';
+    this.filterNode.frequency.value = 1200;
+
+    // Node connections
+    this.noiseNode.connect(this.filterNode);
+    this.filterNode.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination); 
   }
 
-  makeNoise() {
-    const bufferSize = 3 * this.audioContext.sampleRate;
+  play() {
+    const bufferSize = 10 * this.audioContext.sampleRate;
     const noiseBuffer = this.audioContext.createBuffer(
       1,
       bufferSize,
@@ -17,9 +30,16 @@ class Noise {
       output[i] = Math.random() * 2 - 1;
     }
 
-    var source = this.audioContext.createBufferSource();
-    source.buffer = noiseBuffer;
-    source.connect(this.audioContext.destination);
-    source.start();
+    this.noiseNode.buffer = noiseBuffer;
+    this.noiseNode.loop = true;
+    this.gainNode.gain.setTargetAtTime(this.volume, this.audioContext.currentTime, 1); // Slight Fade in
+    this.noiseNode.start();
   }
+
+  stop() {
+    // Slight fade out and stop
+    this.gainNode.gain.setTargetAtTime(0, this.audioContext.currentTime, 0.1);
+    this.noiseNode.stop(this.audioContext.currentTime + 1);
+  }
+
 }

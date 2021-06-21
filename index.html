@@ -11,11 +11,36 @@
 
 <body>
   <h1>The Zone</h1>
-  <button onclick="letsMakeSomeNoise()">▶</button>
+  <button id="playbutton" onclick="letsMakeSomeNoise()">▶️</button>
+  <div class="controls">
+    <label>Volume</label>
+    <br />
+    <input type="range" min="1" max="100" value="50" onChange="volumeChange(this.value)" />
+  </div>
   <script>
-    function letsMakeSomeNoise() {
-      const shhhhh = new Noise();
-      shhhhh.makeNoise();
+    const playButton = document.getElementById('playbutton');
+    let newNoise;
+    function letsMakeSomeNoise(volume) {
+      const settings = {
+        volume,
+      }
+      newNoise = new Noise(settings);
+      newNoise.play();
+
+      playButton.onclick = stfu;
+      playButton.innerHTML = '⏸';
+    }
+
+    function stfu() {
+      newNoise.stop();
+      playButton.onclick = letsMakeSomeNoise;
+      playButton.innerHTML = '▶️';
+    }
+
+    function volumeChange(e) {
+      newNoise.stop();
+      const vollevel = e /100;
+      letsMakeSomeNoise(vollevel);
     }
   </script>
 </body>
