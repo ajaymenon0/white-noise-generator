@@ -52,15 +52,19 @@
     }
 
     const volumeChange = debounce((e) => {
-      newNoise.stop();
       volume = e /100;
-      if(playState === 'playing') initNoiseMaker();
+      if (newNoise) {
+        newNoise.stop();
+        if(playState === 'playing') initNoiseMaker();
+      }
     })
     
     const cutoffChange = debounce((e) => {
-      newNoise.stop();
       cutoff = e * 100;
-      if(playState === 'playing') initNoiseMaker();
+      if(newNoise) {
+        newNoise.stop();
+        if(playState === 'playing') initNoiseMaker();
+      }
     })
 
     function togglePlayButton(mode) {
