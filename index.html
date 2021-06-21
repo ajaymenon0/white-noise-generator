@@ -12,6 +12,7 @@
 <body>
   <h1>The Zone</h1>
   <button id="playbutton" onclick="letsMakeSomeNoise()">▶️</button>
+  <span id="showtime">25:00</span>
   <div class="controls">
     <label>Volume</label>
     <br />
@@ -23,36 +24,59 @@
   </div>
   <script>
     const playButton = document.getElementById('playbutton');
-    let newNoise, volume, cutoff;
+    const showtime = document.getElementById('showtime');
+    let newNoise, volume, cutoff, pomodoro;
     function letsMakeSomeNoise() {
+      initNoiseMaker();
+      pomodoro = new Timer(showtime, newNoise, togglePlayButton);
+      pomodoro.start();
+
+      togglePlayButton('playing');
+    }
+
+    function initNoiseMaker(){
       const settings = {
         volume,
         cutoff
       }
       newNoise = new Noise(settings);
       newNoise.play();
-
-      playButton.onclick = stfu;
-      playButton.innerHTML = '⏸';
     }
 
     function stfu() {
       newNoise.stop();
-      playButton.onclick = letsMakeSomeNoise;
-      playButton.innerHTML = '▶️';
+      pomodoro.stop();
+      togglePlayButton('paused');
     }
 
     const volumeChange = debounce((e) => {
       newNoise.stop();
       volume = e /100;
-      letsMakeSomeNoise();
+      initNoiseMaker();
     })
     
     const cutoffChange = debounce((e) => {
       newNoise.stop();
       cutoff = e * 100;
-      letsMakeSomeNoise();
+      initNoiseMaker();
     })
+
+    function togglePlayButton(mode) {
+      switch(mode) {
+        case 'playing':
+          playButton.onclick = stfu;
+          playButton.innerHTML = '⏸';
+          break;
+        default:
+          playButton.onclick = () => {
+            pomodoro.start();
+            initNoiseMaker();
+            playButton.onclick = stfu;
+            playButton.innerHTML = '⏸';
+          }
+          playButton.innerHTML = '▶️';
+      }
+    }
   </script>
 </body>
 

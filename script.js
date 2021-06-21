@@ -41,7 +41,48 @@ class Noise {
     this.gainNode.gain.setTargetAtTime(0, this.audioContext.currentTime, 0.1);
     this.noiseNode.stop(this.audioContext.currentTime + 1);
   }
+}
 
+class Timer {
+  constructor(ele, noisemaker, togglePlayButton) {
+    this.secondsLeft = 1500;
+    this.ele = ele;
+    this.print(this.secondsLeft);
+    this.timer;
+    this.noise = noisemaker;
+    this.togglePlayButton = togglePlayButton;
+  }
+
+  secondsToTimeStamp() {
+    const minutes = parseInt(this.secondsLeft/60).toString().padStart(2, '0');
+    const seconds = (this.secondsLeft%60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }
+
+  print() {
+    const output = this.secondsToTimeStamp();
+    this.ele.innerHTML = output;
+  }
+
+  start() {
+    this.timer = setInterval(() => {
+      if(this.secondsLeft > 0) {
+        this.secondsLeft--;
+        this.print();
+      } else {
+        this.secondsLeft = 1500;
+        this.noise.stop();
+        this.stop();
+        this.togglePlayButton('stopped');
+        this.print();
+      }
+    }, 1000);
+  }
+
+  stop() {
+    clearInterval(this.timer);
+    // this.secondsLeft = 1500;
+  }
 }
 
 // Thanks https://www.freecodecamp.org/news/javascript-debounce-example/
