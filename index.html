@@ -15,14 +15,19 @@
   <div class="controls">
     <label>Volume</label>
     <br />
-    <input type="range" min="1" max="100" value="50" onChange="volumeChange(this.value)" />
+    <input type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
+    <br />
+    <label>Sharpness</label>
+    <br />
+    <input type="range" min="1" max="20" value="10" oninput="cutoffChange(this.value)" />
   </div>
   <script>
     const playButton = document.getElementById('playbutton');
-    let newNoise;
-    function letsMakeSomeNoise(volume) {
+    let newNoise, volume, cutoff;
+    function letsMakeSomeNoise() {
       const settings = {
         volume,
+        cutoff
       }
       newNoise = new Noise(settings);
       newNoise.play();
@@ -37,11 +42,17 @@
       playButton.innerHTML = '▶️';
     }
 
-    function volumeChange(e) {
+    const volumeChange = debounce((e) => {
       newNoise.stop();
-      const vollevel = e /100;
-      letsMakeSomeNoise(vollevel);
-    }
+      volume = e /100;
+      letsMakeSomeNoise();
+    })
+    
+    const cutoffChange = debounce((e) => {
+      newNoise.stop();
+      cutoff = e * 100;
+      letsMakeSomeNoise();
+    })
   </script>
 </body>
 

@@ -9,7 +9,7 @@ class Noise {
 
     this.filterNode = this.audioContext.createBiquadFilter();
     this.filterNode.type = 'lowpass';
-    this.filterNode.frequency.value = 1200;
+    this.filterNode.frequency.value = settings.cutoff || 1000;
 
     // Node connections
     this.noiseNode.connect(this.filterNode);
@@ -42,4 +42,13 @@ class Noise {
     this.noiseNode.stop(this.audioContext.currentTime + 1);
   }
 
+}
+
+// Thanks https://www.freecodecamp.org/news/javascript-debounce-example/
+function debounce(func, timeout = 300){
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
 }
