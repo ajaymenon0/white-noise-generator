@@ -70,7 +70,6 @@ class Timer {
         this.secondsLeft--;
         this.print();
       } else {
-        console.log('Am i here?')
         this.secondsLeft = 1500;
         this.noise.stop();
         this.stop();
@@ -82,6 +81,10 @@ class Timer {
 
   stop() {
     clearInterval(this.timer);
+  }
+
+  updateNoisemaker(instance) {
+    this.noise = instance;
   }
 }
 

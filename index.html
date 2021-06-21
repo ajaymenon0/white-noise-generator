@@ -7,14 +7,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="script.js"></script>
   <title>Be in the zone</title>
+  <style>
+    .hide {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
   <h1>The Zone</h1>
   <button id="playbutton" onclick="letsMakeSomeNoise()">▶️</button>
-  <span id="showtime">25:00</span>
-  <button onclick="resetTimer()">Reset</button>
+  <span id="showtime" class="hide">25:00</span>
+  <button id="tomatoreset" class="hide" onclick="resetTimer()">Reset</button>
   <div class="controls">
+    <button onclick="togglePomodoro()">🍅</button>
+    <br />
     <label>Volume</label>
     <br />
     <input type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
@@ -26,12 +33,13 @@
   <script>
     const playButton = document.getElementById('playbutton');
     const showtime = document.getElementById('showtime');
+    const tomatoreset = document.getElementById('tomatoreset');
     let newNoise, volume, cutoff, pomodoro;
     let playState = 'stopped';
+    let isPomodoroOn = false;
     function letsMakeSomeNoise() {
       initNoiseMaker();
-      pomodoro = new Timer(showtime, newNoise, togglePlayButton);
-      pomodoro.start();
+      if(pomodoro) pomodoro.start();
 
       togglePlayButton('playing');
     }
@@ -42,12 +50,14 @@
         cutoff
       }
       newNoise = new Noise(settings);
+      if (pomodoro) pomodoro.updateNoisemaker(newNoise);
       newNoise.play();
     }
 
     function stfu() {
       newNoise.stop();
-      pomodoro.stop();
+      if(pomodoro) pomodoro.stop();
+      else newNoise = null;
       togglePlayButton('stopped');
     }
 
@@ -65,7 +75,22 @@
         newNoise.stop();
         if(playState === 'playing') initNoiseMaker();
       }
-    })
+    });
+
+    const togglePomodoro = () => {
+      isPomodoroOn = !isPomodoroOn;
+      if (isPomodoroOn) {
+        tomatoreset.classList.remove('hide');
+        showtime.classList.remove('hide');
+        pomodoro = new Timer(showtime, newNoise, togglePlayButton);
+        if (playState === 'playing') stfu();
+      } else {
+        tomatoreset.classList.add('hide');
+        showtime.classList.add('hide');
+        if(pomodoro) pomodoro.stop();
+        pomodoro = null;
+      }
+    }
 
     function togglePlayButton(mode) {
       switch(mode) {
@@ -77,7 +102,7 @@
         default:
           playState = 'stopped';
           playButton.onclick = () => {
-            pomodoro.start();
+            if(pomodoro) pomodoro.start();
             initNoiseMaker();
             playState = 'playing';
             playButton.onclick = stfu;
