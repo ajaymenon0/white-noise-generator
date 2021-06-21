@@ -81,7 +81,10 @@ class Timer {
 
   stop() {
     clearInterval(this.timer);
-    // this.secondsLeft = 1500;
+  }
+
+  reset() {
+    this.secondsLeft = 0;
   }
 }
 
