@@ -5,38 +5,49 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js"></script>
   <title>Be in the zone</title>
-  <style>
-    .hide {
-      display: none;
-    }
-  </style>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/267793618d.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
   <h1>The Zone</h1>
-  <button id="playbutton" onclick="letsMakeSomeNoise()">▶️</button>
-  <span id="showtime" class="hide">25:00</span>
+  <section id="main">
+    <button id="playbutton" onclick="letsMakeSomeNoise()">
+      <i id="playpauseicon" class="fas fa-play"></i>
+      <!-- <i class="fas fa-pause"></i> -->
+      <span id="showtime" class="hide">25:00</span>
+    </button>
+  </section>
   <button id="tomatoreset" class="hide" onclick="resetTimer()">Reset</button>
   <div class="controls">
-    <button onclick="togglePomodoro()">🍅</button>
-    <br />
-    <label>Volume</label>
-    <br />
-    <input type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
-    <br />
-    <label>Sharpness</label>
-    <br />
-    <input type="range" min="1" max="20" value="10" oninput="cutoffChange(this.value)" />
+    <button id="tomatotoggle" class="btn" onclick="togglePomodoro()">
+      <i class="fas fa-clock"></i>
+    </button>
+    <button id="volumetoggle" class="btn" onclick="togglePomodoro()">
+      <i class="fas fa-volume-up"></i>
+    </button>
+    <button id="cutofftoggle" class="btn" onclick="togglePomodoro()">
+      <i class="fas fa-icicles fa-rotate-180"></i>
+    </button>
+  </div>
+  <div class="control-sliders">
+    <div class="param">
+      <input class="" type="range" min="1" max="20" value="10" oninput="cutoffChange(this.value)" />
+      <labe>Sharpness</labe>
+    </div>
+    <input class="hide" type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
   </div>
   <script>
     const playButton = document.getElementById('playbutton');
     const showtime = document.getElementById('showtime');
     const tomatoreset = document.getElementById('tomatoreset');
+    const playpauseicon = document.getElementById('playpauseicon');
     let newNoise, volume, cutoff, pomodoro;
     let playState = 'stopped';
     let isPomodoroOn = false;
+
     function letsMakeSomeNoise() {
       initNoiseMaker();
       if(pomodoro) pomodoro.start();
@@ -97,7 +108,8 @@
         case 'playing':
           playState = 'playing';
           playButton.onclick = stfu;
-          playButton.innerHTML = '⏸';
+          playpauseicon.classList.remove('fa-play');
+          playpauseicon.classList.add('fa-pause');
           break;
         default:
           playState = 'stopped';
@@ -106,9 +118,11 @@
             initNoiseMaker();
             playState = 'playing';
             playButton.onclick = stfu;
-            playButton.innerHTML = '⏸';
+            playpauseicon.classList.remove('fa-play');
+            playpauseicon.classList.add('fa-pause');
           }
-          playButton.innerHTML = '▶️';
+          playpauseicon.classList.add('fa-play');
+          playpauseicon.classList.remove('fa-pause');
       }
     }
 
