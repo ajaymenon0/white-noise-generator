@@ -95,12 +95,39 @@ h1 {
 
 #playbutton:hover, .controls .btn:hover {
   box-shadow: 0px 0px 14px var(--dark-aqua);
-  opacity: 0.9;
 }
 
 #playbutton .fa-play, #playbutton .fa-pause {
   font-size: 5rem;
   color: var(--dark-aqua);
+}
+
+.ripple::after {
+  content: '';
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  margin: 0 auto;
+  background:
+    radial-gradient(
+      transparent 60%,var(--dark-aqua) 65%,
+      var(--dark-aqua) 66%,transparent 70%);
+  background-size:0 0;
+  background-position:center;
+  background-repeat:no-repeat;
+  animation:change 0.8s ease 1;
+  z-index: -1;
+}
+
+@keyframes change{
+  0% {
+    background-size:300px 300px;
+    opacity: 1;
+  }
+  100% {
+    background-size: 430px 430px;
+    opacity: 0;
+  }
 }
 
 .hide {

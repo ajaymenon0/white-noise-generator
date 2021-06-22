@@ -168,6 +168,7 @@ function togglePlayButton(mode) {
     case 'playing':
       playState = 'playing';
       playButton.onclick = stfu;
+      rippleBtn();
       playpauseicon.classList.remove('fa-play');
       playpauseicon.classList.add('fa-pause');
       break;
@@ -178,6 +179,7 @@ function togglePlayButton(mode) {
         initNoiseMaker();
         playState = 'playing';
         playButton.onclick = stfu;
+        rippleBtn();
         playpauseicon.classList.remove('fa-play');
         playpauseicon.classList.add('fa-pause');
       }
@@ -198,4 +200,11 @@ function toggleControls() {
   } else {
     controlsliders.style.visibility = 'hidden';
   }
+}
+
+function rippleBtn() {
+  playButton.classList.add('ripple');
+  setTimeout(() => {
+    playButton.classList.remove('ripple');
+  }, 1000);
 }
