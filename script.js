@@ -96,3 +96,106 @@ function debounce(func, timeout = 300){
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
+
+const playButton = document.getElementById('playbutton');
+const showtime = document.getElementById('showtime');
+const tomatoreset = document.getElementById('tomatoreset');
+const playpauseicon = document.getElementById('playpauseicon');
+const controlsliders = document.getElementById('controlsliders');
+
+let newNoise, volume, cutoff, pomodoro;
+let playState = 'stopped';
+let isPomodoroOn = false;
+let showControls = false;
+
+function letsMakeSomeNoise() {
+  initNoiseMaker();
+  if(pomodoro) pomodoro.start();
+
+  togglePlayButton('playing');
+}
+
+function initNoiseMaker(){
+  const settings = {
+    volume,
+    cutoff
+  }
+  newNoise = new Noise(settings);
+  if (pomodoro) pomodoro.updateNoisemaker(newNoise);
+  newNoise.play();
+}
+
+function stfu() {
+  newNoise.stop();
+  if(pomodoro) pomodoro.stop();
+  else newNoise = null;
+  togglePlayButton('stopped');
+}
+
+const volumeChange = debounce((e) => {
+  volume = e /100;
+  if (newNoise) {
+    newNoise.stop();
+    if(playState === 'playing') initNoiseMaker();
+  }
+})
+
+const cutoffChange = debounce((e) => {
+  cutoff = e * 100;
+  if(newNoise) {
+    newNoise.stop();
+    if(playState === 'playing') initNoiseMaker();
+  }
+});
+
+const togglePomodoro = () => {
+  isPomodoroOn = !isPomodoroOn;
+  if (isPomodoroOn) {
+    tomatoreset.classList.remove('hide');
+    showtime.classList.remove('hide');
+    pomodoro = new Timer(showtime, newNoise, togglePlayButton);
+    if (playState === 'playing') stfu();
+  } else {
+    tomatoreset.classList.add('hide');
+    showtime.classList.add('hide');
+    if(pomodoro) pomodoro.stop();
+    pomodoro = null;
+  }
+}
+
+function togglePlayButton(mode) {
+  switch(mode) {
+    case 'playing':
+      playState = 'playing';
+      playButton.onclick = stfu;
+      playpauseicon.classList.remove('fa-play');
+      playpauseicon.classList.add('fa-pause');
+      break;
+    default:
+      playState = 'stopped';
+      playButton.onclick = () => {
+        if(pomodoro) pomodoro.start();
+        initNoiseMaker();
+        playState = 'playing';
+        playButton.onclick = stfu;
+        playpauseicon.classList.remove('fa-play');
+        playpauseicon.classList.add('fa-pause');
+      }
+      playpauseicon.classList.add('fa-play');
+      playpauseicon.classList.remove('fa-pause');
+  }
+}
+
+function resetTimer() {
+  stfu();
+  pomodoro = new Timer(showtime, newNoise, togglePlayButton);
+}
+
+function toggleControls() {
+  showControls = !showControls;
+  if (showControls) {
+    controlsliders.style.visibility = 'visible';
+  } else {
+    controlsliders.style.visibility = 'hidden';
+  }
+}
