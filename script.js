@@ -151,13 +151,13 @@ const cutoffChange = debounce((e) => {
 const togglePomodoro = () => {
   isPomodoroOn = !isPomodoroOn;
   if (isPomodoroOn) {
-    tomatoreset.classList.remove('hide');
-    showtime.classList.remove('hide');
+    tomatoreset.classList.add('showreset');
+    showtime.classList.remove('timerhide');
     pomodoro = new Timer(showtime, newNoise, togglePlayButton);
     if (playState === 'playing') stfu();
   } else {
-    tomatoreset.classList.add('hide');
-    showtime.classList.add('hide');
+    tomatoreset.classList.remove('showreset');
+    showtime.classList.add('timerhide');
     if(pomodoro) pomodoro.stop();
     pomodoro = null;
   }
