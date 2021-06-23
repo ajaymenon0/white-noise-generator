@@ -165,6 +165,9 @@ h1 {
   width: 300px;
   padding: 1rem;
   border-radius: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
 }
 
 .control-sliders .param {

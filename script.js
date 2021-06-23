@@ -197,7 +197,9 @@ function toggleControls() {
   showControls = !showControls;
   if (showControls) {
     controlsliders.style.visibility = 'visible';
+    controlsliders.style.opacity = 1;
   } else {
+    controlsliders.style.opacity = 0;
     controlsliders.style.visibility = 'hidden';
   }
 }
