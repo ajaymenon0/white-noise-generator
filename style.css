@@ -52,6 +52,7 @@ table {
   --white: #ffffff;
   --dark-aqua: #39A2DB;
   --lighest-aqua: #E8F0F2;
+  --darkish-black: #666666;
 }
 
 body {
@@ -89,9 +90,10 @@ h1 {
   background-color: var(--lighest-aqua);
   transition: all 0.4s;
   cursor: pointer;
+  outline: none;
 }
 
-#playbutton:hover, .controls .btn:hover {
+#playbutton:hover, #playbutton:focus, .controls .btn:hover, .controls .btn:focus {
   box-shadow: 0px 0px 14px var(--dark-aqua);
 }
 
@@ -147,6 +149,7 @@ h1 {
   color: var(--dark-aqua);
   cursor: pointer;
   transition: all 0.5s;
+  outline: none;
 }
 
 .control-sliders {
@@ -208,6 +211,11 @@ h1 {
   visibility: hidden;
   opacity: 0;
   transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+#tomatoreset:focus {
+  box-shadow: 0px 0px 4px var(--darkish-black);
 }
 
 .showreset {
