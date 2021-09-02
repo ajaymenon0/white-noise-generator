@@ -1,3 +1,4 @@
+const headTitle = document.title;
 class Noise {
   constructor(settings) {
     this.audioContext = new (window.AudioContext ||
@@ -51,6 +52,7 @@ class Timer {
     this.timer;
     this.noise = noisemaker;
     this.togglePlayButton = togglePlayButton;
+    this.title = document.title;
   }
 
   secondsToTimeStamp() {
@@ -61,6 +63,7 @@ class Timer {
 
   print() {
     const output = this.secondsToTimeStamp();
+    document.title = `${output} · ${headTitle}`;
     this.ele.innerHTML = output;
   }
 
@@ -158,6 +161,7 @@ const togglePomodoro = () => {
   } else {
     tomatoreset.classList.remove('showreset');
     showtime.classList.add('timerhide');
+    document.title = headTitle;
     if(pomodoro) pomodoro.stop();
     pomodoro = null;
   }
