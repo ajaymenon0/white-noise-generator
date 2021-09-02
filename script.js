@@ -105,6 +105,18 @@ const showtime = document.getElementById('showtime');
 const tomatoreset = document.getElementById('tomatoreset');
 const playpauseicon = document.getElementById('playpauseicon');
 const controlsliders = document.getElementById('controlsliders');
+const volumeslider = document.getElementById('volumeslider');
+const cutoffslider = document.getElementById('cutoffslider');
+const lastChangedVolume = localStorage.getItem('volume');
+const lastChangedCutoff = localStorage.getItem('cutoff');
+
+if (lastChangedVolume){
+  volumeslider.value = lastChangedVolume;
+}
+
+if (lastChangedCutoff){
+  cutoffslider.value = lastChangedCutoff;
+}
 
 let newNoise, volume, cutoff, pomodoro;
 let playState = 'stopped';
@@ -120,8 +132,8 @@ function letsMakeSomeNoise() {
 
 function initNoiseMaker(){
   const settings = {
-    volume,
-    cutoff
+    volume: volumeslider.value / 100,
+    cutoff: cutoffslider.value * 100,
   }
   newNoise = new Noise(settings);
   if (pomodoro) pomodoro.updateNoisemaker(newNoise);
@@ -136,15 +148,15 @@ function stfu() {
 }
 
 const volumeChange = debounce((e) => {
-  volume = e /100;
-  if (newNoise) {
+  localStorage.setItem('volume', e);
+  if(newNoise) {
     newNoise.stop();
     if(playState === 'playing') initNoiseMaker();
   }
 })
 
 const cutoffChange = debounce((e) => {
-  cutoff = e * 100;
+  localStorage.setItem('cutoff', e);
   if(newNoise) {
     newNoise.stop();
     if(playState === 'playing') initNoiseMaker();

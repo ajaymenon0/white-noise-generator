@@ -19,7 +19,7 @@
 <body>
   <h1>The Zone</h1>
   <section id="main">
-    <button id="playbutton" onclick="letsMakeSomeNoise()">
+    <button id="playbutton" onclick="letsMakeSomeNoise()" autofocus>
       <i id="playpauseicon" class="fas fa-play"></i>
       <span id="showtime" class="timerhide">25:00</span>
     </button>
@@ -38,11 +38,11 @@
   <div class="control-sliders" id="controlsliders">
     <div class="param">
       <i class="fas fa-volume-up"></i>
-      <input type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
+      <input id="volumeslider" type="range" min="1" max="100" value="50" oninput="volumeChange(this.value)" />
     </div>
     <div class="param">
       <i class="fas fa-icicles fa-rotate-180"></i>
-      <input type="range" min="1" max="20" value="10" oninput="cutoffChange(this.value)" />
+      <input id="cutoffslider" type="range" min="1" max="20" value="10" oninput="cutoffChange(this.value)" />
     </div>
   </div>
   <script src="script.js"></script>
