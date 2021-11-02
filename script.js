@@ -78,6 +78,9 @@ class Timer {
         this.stop();
         this.togglePlayButton('stopped');
         this.print();
+        const notif = new Notification('End of 25 mins', {
+          body: 'Take a break!'
+        });
       }
     }, 1000);
   }
@@ -225,4 +228,12 @@ function rippleBtn() {
   setTimeout(() => {
     playButton.classList.remove('ripple');
   }, 1000);
+}
+
+if(Notification.permission !== 'denied') {
+  Notification.requestPermission().then((permission) => {
+    if(permission === 'granted') {
+      console.log('User has allowed notifications');
+    }
+  });
 }
