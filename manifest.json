@@ -1,0 +1,27 @@
+{
+  "name": "Be in the zone",
+  "short_name": "The zone",
+  "description": "Tiny white noise generator + pomodoro timer to help with productivity.",
+  "lang": "en-GB",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#A2DBFA",
+  "theme_color": "#A2DBFA",
+  "icons": [
+    {
+      "src": "icons/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
