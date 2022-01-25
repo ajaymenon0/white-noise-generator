@@ -72,7 +72,10 @@ h1 {
 #main {
   display: flex;
   justify-content: center;
-  margin-top: 6rem;
+  overflow: hidden;
+  width: 25vw;
+  padding: 1rem;
+  margin: 5rem auto -1rem;
   position: relative;
 }
 
@@ -157,14 +160,15 @@ h1 {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 3rem auto;
   background-color: var(--lighest-aqua);
-  width: 300px;
-  padding: 1rem;
-  border-radius: 15px;
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease-in-out;
+  transition: all 600ms ease-in-out;
+  position: absolute;
+  transform: translateX(150%);
 }
 
 .control-sliders .param {
@@ -199,7 +203,7 @@ h1 {
 
 #tomatoreset {
   position: absolute;
-  bottom: -18px;
+  bottom: 0px;
   border-radius: 50%;
   background-color: var(--dark-aqua);
   color: var(--lighest-aqua);

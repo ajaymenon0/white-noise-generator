@@ -215,11 +215,15 @@ function resetTimer() {
 function toggleControls() {
   showControls = !showControls;
   if (showControls) {
+    controlsliders.style.transform = "translateX(0%)";
     controlsliders.style.visibility = 'visible';
     controlsliders.style.opacity = 1;
+    tomatoreset.style.bottom = '-40px';
   } else {
+    controlsliders.style.transform = "translateX(120%)";
     controlsliders.style.opacity = 0;
     controlsliders.style.visibility = 'hidden';
+    tomatoreset.style.bottom = '0px';
   }
 }
 
