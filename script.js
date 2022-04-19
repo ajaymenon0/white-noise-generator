@@ -223,7 +223,7 @@ function toggleControls() {
     controlsliders.style.transform = "translateX(120%)";
     controlsliders.style.opacity = 0;
     controlsliders.style.visibility = 'hidden';
-    tomatoreset.style.bottom = '0px';
+    tomatoreset.style.bottom = '30px';
   }
 }
 

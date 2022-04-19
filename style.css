@@ -200,7 +200,7 @@ h1 {
 
 #tomatoreset {
   position: absolute;
-  bottom: 0px;
+  bottom: 20px;
   border-radius: 50%;
   background-color: var(--dark-aqua);
   color: var(--lighest-aqua);
