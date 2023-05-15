@@ -9,13 +9,13 @@ class Noise {
     this.volume = settings.volume || 0.5; // init volume
 
     this.filterNode = this.audioContext.createBiquadFilter();
-    this.filterNode.type = 'lowpass';
+    this.filterNode.type = "lowpass";
     this.filterNode.frequency.value = settings.cutoff || 1000;
 
     // Node connections
     this.noiseNode.connect(this.filterNode);
     this.filterNode.connect(this.gainNode);
-    this.gainNode.connect(this.audioContext.destination); 
+    this.gainNode.connect(this.audioContext.destination);
   }
 
   play() {
@@ -33,7 +33,11 @@ class Noise {
 
     this.noiseNode.buffer = noiseBuffer;
     this.noiseNode.loop = true;
-    this.gainNode.gain.setTargetAtTime(this.volume, this.audioContext.currentTime, 1); // Slight Fade in
+    this.gainNode.gain.setTargetAtTime(
+      this.volume,
+      this.audioContext.currentTime,
+      1
+    ); // Slight Fade in
     this.noiseNode.start();
   }
 
@@ -56,8 +60,10 @@ class Timer {
   }
 
   secondsToTimeStamp() {
-    const minutes = parseInt(this.secondsLeft/60).toString().padStart(2, '0');
-    const seconds = (this.secondsLeft%60).toString().padStart(2, '0');
+    const minutes = parseInt(this.secondsLeft / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (this.secondsLeft % 60).toString().padStart(2, "0");
     return `${minutes}:${seconds}`;
   }
 
@@ -69,17 +75,17 @@ class Timer {
 
   start() {
     this.timer = setInterval(() => {
-      if(this.secondsLeft > 0) {
+      if (this.secondsLeft > 0) {
         this.secondsLeft--;
         this.print();
       } else {
         this.secondsLeft = 1500;
         this.noise.stop();
         this.stop();
-        this.togglePlayButton('stopped');
+        this.togglePlayButton("stopped");
         this.print();
-        const notif = new Notification('End of 25 mins', {
-          body: 'Take a break!'
+        const notif = new Notification("End of 25 mins", {
+          body: "Take a break!",
         });
       }
     }, 1000);
@@ -95,49 +101,53 @@ class Timer {
 }
 
 // Thanks https://www.freecodecamp.org/news/javascript-debounce-example/
-function debounce(func, timeout = 300){
+function debounce(func, timeout = 300) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
   };
 }
 
-const playButton = document.getElementById('playbutton');
-const showtime = document.getElementById('showtime');
-const tomatoreset = document.getElementById('tomatoreset');
-const playpauseicon = document.getElementById('playpauseicon');
-const controlsliders = document.getElementById('controlsliders');
-const volumeslider = document.getElementById('volumeslider');
-const cutoffslider = document.getElementById('cutoffslider');
-const lastChangedVolume = localStorage.getItem('volume');
-const lastChangedCutoff = localStorage.getItem('cutoff');
+const playButton = document.getElementById("playbutton");
+const showtime = document.getElementById("showtime");
+const tomatoreset = document.getElementById("tomatoreset");
+const playpauseicon = document.getElementById("playpauseicon");
+const controlsliders = document.getElementById("controlsliders");
+const volumeslider = document.getElementById("volumeslider");
+const cutoffslider = document.getElementById("cutoffslider");
+const lastChangedVolume = localStorage.getItem("volume");
+const lastChangedCutoff = localStorage.getItem("cutoff");
+const totalThemes = 4;
+const body = document.body;
 
-if (lastChangedVolume){
+if (lastChangedVolume) {
   volumeslider.value = lastChangedVolume;
 }
 
-if (lastChangedCutoff){
+if (lastChangedCutoff) {
   cutoffslider.value = lastChangedCutoff;
 }
 
 let newNoise, volume, cutoff, pomodoro;
-let playState = 'stopped';
+let playState = "stopped";
 let isPomodoroOn = false;
 let showControls = false;
 
 function letsMakeSomeNoise() {
   initNoiseMaker();
-  if(pomodoro) pomodoro.start();
+  if (pomodoro) pomodoro.start();
 
-  togglePlayButton('playing');
+  togglePlayButton("playing");
 }
 
-function initNoiseMaker(){
+function initNoiseMaker() {
   const settings = {
     volume: volumeslider.value / 100,
     cutoff: cutoffslider.value * 100,
-  }
+  };
   newNoise = new Noise(settings);
   if (pomodoro) pomodoro.updateNoisemaker(newNoise);
   newNoise.play();
@@ -145,65 +155,65 @@ function initNoiseMaker(){
 
 function stfu() {
   newNoise.stop();
-  if(pomodoro) pomodoro.stop();
+  if (pomodoro) pomodoro.stop();
   else newNoise = null;
-  togglePlayButton('stopped');
+  togglePlayButton("stopped");
 }
 
 const volumeChange = debounce((e) => {
-  localStorage.setItem('volume', e);
-  if(newNoise) {
+  localStorage.setItem("volume", e);
+  if (newNoise) {
     newNoise.stop();
-    if(playState === 'playing') initNoiseMaker();
+    if (playState === "playing") initNoiseMaker();
   }
-})
+});
 
 const cutoffChange = debounce((e) => {
-  localStorage.setItem('cutoff', e);
-  if(newNoise) {
+  localStorage.setItem("cutoff", e);
+  if (newNoise) {
     newNoise.stop();
-    if(playState === 'playing') initNoiseMaker();
+    if (playState === "playing") initNoiseMaker();
   }
 });
 
 const togglePomodoro = () => {
   isPomodoroOn = !isPomodoroOn;
   if (isPomodoroOn) {
-    tomatoreset.classList.add('showreset');
-    showtime.classList.remove('timerhide');
+    tomatoreset.classList.add("showreset");
+    showtime.classList.remove("timerhide");
     pomodoro = new Timer(showtime, newNoise, togglePlayButton);
-    if (playState === 'playing') stfu();
+    if (playState === "playing") stfu();
   } else {
-    tomatoreset.classList.remove('showreset');
-    showtime.classList.add('timerhide');
+    tomatoreset.classList.remove("showreset");
+    showtime.classList.add("timerhide");
     document.title = headTitle;
-    if(pomodoro) pomodoro.stop();
+    if (pomodoro) pomodoro.stop();
     pomodoro = null;
   }
-}
+};
 
 function togglePlayButton(mode) {
-  switch(mode) {
-    case 'playing':
-      playState = 'playing';
+  switch (mode) {
+    case "playing":
+      playState = "playing";
       playButton.onclick = stfu;
       rippleBtn();
-      playpauseicon.classList.remove('fa-play');
-      playpauseicon.classList.add('fa-pause');
+      playpauseicon.classList.remove("fa-play");
+      playpauseicon.classList.add("fa-pause");
       break;
     default:
-      playState = 'stopped';
+      playState = "stopped";
       playButton.onclick = () => {
-        if(pomodoro) pomodoro.start();
+        if (pomodoro) pomodoro.start();
         initNoiseMaker();
-        playState = 'playing';
+        playState = "playing";
         playButton.onclick = stfu;
         rippleBtn();
-        playpauseicon.classList.remove('fa-play');
-        playpauseicon.classList.add('fa-pause');
-      }
-      playpauseicon.classList.add('fa-play');
-      playpauseicon.classList.remove('fa-pause');
+        playpauseicon.classList.remove("fa-play");
+        playpauseicon.classList.add("fa-pause");
+      };
+      playpauseicon.classList.add("fa-play");
+      playpauseicon.classList.remove("fa-pause");
   }
 }
 
@@ -216,28 +226,38 @@ function toggleControls() {
   showControls = !showControls;
   if (showControls) {
     controlsliders.style.transform = "translateX(0%)";
-    controlsliders.style.visibility = 'visible';
+    controlsliders.style.visibility = "visible";
     controlsliders.style.opacity = 1;
-    tomatoreset.style.bottom = '-40px';
+    tomatoreset.style.bottom = "-40px";
   } else {
     controlsliders.style.transform = "translateX(120%)";
     controlsliders.style.opacity = 0;
-    controlsliders.style.visibility = 'hidden';
-    tomatoreset.style.bottom = '30px';
+    controlsliders.style.visibility = "hidden";
+    tomatoreset.style.bottom = "30px";
   }
 }
 
 function rippleBtn() {
-  playButton.classList.add('ripple');
+  playButton.classList.add("ripple");
   setTimeout(() => {
-    playButton.classList.remove('ripple');
+    playButton.classList.remove("ripple");
   }, 1000);
 }
 
-if(Notification.permission !== 'denied') {
+if (Notification.permission !== "denied") {
   Notification.requestPermission().then((permission) => {
-    if(permission === 'granted') {
-      console.log('User has allowed notifications');
+    if (permission === "granted") {
+      console.log("User has allowed notifications");
     }
   });
 }
+
+const switchTheme = () => {
+  const themes = new Array(totalThemes).fill().map((a, i) => `theme-${i}`);
+  const currentTheme = Array.from(body.classList).filter((i) =>
+    i.startsWith("theme")
+  )[0];
+  const currentThemeIndex = parseInt(currentTheme.slice(-1));
+  body.classList.remove(currentTheme);
+  body.classList.add(`theme-${(currentThemeIndex + 1) % totalThemes}`);
+};

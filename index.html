@@ -3,6 +3,7 @@
 <!-- If you're already there, then good for you. You've won today. Go home and live life with a renewed sense of purpose -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +18,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <script src="https://kit.fontawesome.com/267793618d.js" crossorigin="anonymous"></script>
 </head>
-<body>
+
+<body class="theme-2">
   <h1>The Zone</h1>
   <section id="main">
     <button id="playbutton" onclick="letsMakeSomeNoise()" autofocus>
@@ -42,6 +44,9 @@
     <button id="tomatotoggle" class="btn" onclick="togglePomodoro()">
       <i class="fas fa-clock"></i>
     </button>
+    <button id="theme-switcher" class="btn" onclick="switchTheme()">
+      <i class="fas fa-palette"></i>
+    </button>
     <button id="volumetoggle" class="btn" onclick="toggleControls()">
       <i class="fas fa-cog"></i>
     </button>
@@ -64,4 +69,5 @@
     firebase.analytics();
   </script>
 </body>
+
 </html>
