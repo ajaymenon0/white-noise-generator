@@ -120,6 +120,7 @@ const volumeslider = document.getElementById("volumeslider");
 const cutoffslider = document.getElementById("cutoffslider");
 const lastChangedVolume = localStorage.getItem("volume");
 const lastChangedCutoff = localStorage.getItem("cutoff");
+const setTheme = localStorage.getItem("custom-theme");
 const totalThemes = 4;
 const body = document.body;
 
@@ -129,6 +130,14 @@ if (lastChangedVolume) {
 
 if (lastChangedCutoff) {
   cutoffslider.value = lastChangedCutoff;
+}
+
+if (setTheme) {
+  const currentTheme = Array.from(body.classList).filter((i) =>
+    i.startsWith("theme")
+  )[0];
+  body.classList.remove(currentTheme);
+  body.classList.add(setTheme);
 }
 
 let newNoise, volume, cutoff, pomodoro;
@@ -258,6 +267,8 @@ const switchTheme = () => {
     i.startsWith("theme")
   )[0];
   const currentThemeIndex = parseInt(currentTheme.slice(-1));
+  const newTheme = `theme-${(currentThemeIndex + 1) % totalThemes}`;
   body.classList.remove(currentTheme);
-  body.classList.add(`theme-${(currentThemeIndex + 1) % totalThemes}`);
+  body.classList.add(newTheme);
+  localStorage.setItem("custom-theme", newTheme);
 };

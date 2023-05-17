@@ -66,16 +66,16 @@ table {
 .theme-2 {
   --bgColor: #3f3f3f;
   --white: #ffffff;
-  --primary-color: #d47575;
+  --primary-color: #efefef;
   --secondary-color: #777a7c;
   --darkish: #666666;
 }
 
 .theme-3 {
-  --bgColor: #d9d9d9;
+  --bgColor: #393939;
   --white: #ffffff;
-  --primary-color: #afafaf;
-  --secondary-color: #67747d;
+  --primary-color: #ca7d62;
+  --secondary-color: #d4d4d4;
   --darkish: #666666;
 }
 
